@@ -71,7 +71,6 @@ bool onInterval() {
 }
 
 
-
 void setup() {
   pinMode(SW, INPUT_PULLUP);
   button.attach(SW);
@@ -82,7 +81,6 @@ void setup() {
   dht.begin();
   rtc.writeProtect(false);
   rtc.halt(false);
-
 
   if (EEPROM.read(0) == 0x42) {
     onHour = EEPROM.read(1);
@@ -143,7 +141,7 @@ void loop() {
   // Serial.println(temp);
   // Serial.println(humidity);
   if (page == 1) updateDisplay();  // refresh display if sensor values shown
-}
+  }
 }
 
 void readEncoder() {
@@ -237,7 +235,6 @@ void readEncoder() {
   } lastDetent = detent;
 }
 
-
 void readButton() {
   button.update();
 
@@ -263,7 +260,8 @@ void handleSingleClick() {
     settingMode = static_cast<settingMenu>((settingMode + 1) % 5);
     updateDisplay();
   }
-}  
+}
+
 void handleDoubleClick() {
   if (page == 0) {
     timeSettingMode = static_cast<timeSettingMenu>((timeSettingMode + 1) % 3);
@@ -287,7 +285,6 @@ void storeNewTime() {
     updateDisplay();
   }
 }
-
 
 void readRTC() {
   Time now = rtc.time();
