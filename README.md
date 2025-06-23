@@ -83,4 +83,7 @@ See the [LICENSE](./LICENSE) file for more details.
 ---
 
 ### 📸 Screenshots (Optional)
+
+![powerSwitchTimer](https://github.com/user-attachments/assets/1f2cafa1-bfc2-4718-9319-fdf4058b882d)
+
 ---
