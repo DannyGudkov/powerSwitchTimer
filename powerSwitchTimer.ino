@@ -70,7 +70,6 @@ bool onInterval() {
   }
 }
 
-
 void setup() {
   pinMode(SW, INPUT_PULLUP);
   button.attach(SW);
@@ -124,7 +123,6 @@ void loop() {
     showSavedMessage = false;
     updateDisplay();
   }
-
 
   lastSettingMode = settingMode;
   lastTimeSettingMode = timeSettingMode;
