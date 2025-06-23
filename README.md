@@ -1,7 +1,7 @@
 # Power Switch Timer with OLED Display and Rotary Encoder
 
 This is an Arduino-based Timer designed to control a solid-state relay (SSR) based on user-defined ON/OFF times. It features an OLED display interface and is controlled with a rotary encoder and a push button. It also features temperature and humidity sensors.
-It's been designed for using as light power switch control to switch between time off day inside henhouse in addition it's equipped with temperature and humidity sensors to control the atmosphere inside.
+It's been designed for using as light power switch control to switch between time off day inside henhouse in addition it's equipped with temperature and humidity sensors to check the atmosphere inside.
 
 ## 💡 Features
 
@@ -85,6 +85,6 @@ See the [LICENSE](./LICENSE) file for more details.
 
 ### 📸 Screenshots
 
-![powerSwitchTimer](https://github.com/user-attachments/assets/1f2cafa1-bfc2-4718-9319-fdf4058b882d)
+![powerSwitchTimer](https://github.com/DannyGudkov/powerSwitchTimer/blob/main/powerSwitchTimer.png)
 
 ---
