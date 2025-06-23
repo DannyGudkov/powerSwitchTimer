@@ -1,14 +1,15 @@
 # Power Switch Timer with OLED Display and Rotary Encoder
 
-This is an Arduino-based **smart timer controller** designed to control a solid-state relay (SSR) based on user-defined ON/OFF times. It features an OLED display interface and is controlled with a rotary encoder and a push button.
+This is an Arduino-based Timer designed to control a solid-state relay (SSR) based on user-defined ON/OFF times. It features an OLED display interface and is controlled with a rotary encoder and a push button. It also features temperature and humidity sensors.
+It's been designed for using as light power switch control to switch between time off day inside henhouse in addition it's equipped with temperature and humidity sensors to check the atmosphere inside.
 
 ## 💡 Features
 
 - ⏰ Programmable ON/OFF schedule with hour and minute precision  
 - 🌀 Rotary encoder control for setting times and navigating pages  
-- 👆 Single click to change operating mode; double click to adjust system time  
+- 👆 Single click to change ON/OFF time; double click to adjust time of the day  
 - 🌡️ Temperature and humidity readings from a DHT22 sensor  
-- 🧠 EEPROM memory to store the schedule across power cycles  
+- 🧠 EEPROM memory to store the ON/OFF time  
 - 📺 OLED Display (128x64) to show:
   - Current time  
   - ON and OFF timers  
@@ -17,14 +18,13 @@ This is an Arduino-based **smart timer controller** designed to control a solid-
 
 ## 🔧 Hardware Used
 
-- Arduino (Uno/Nano/Mega)  
-- Rotary Encoder (with push button)  
+- Arduino (Pro Micro)  
+- Rotary Encoder Module (with push button)  
 - DHT22 sensor  
 - DS1302 Real Time Clock (RTC) module  
 - SSD1306 128x64 OLED Display (I2C)  
 - Solid State Relay (SSR)  
 - EEPROM (built-in)  
-- Optional: pull-up resistors for encoder/button
 
 ## 📦 Libraries Required
 
@@ -66,14 +66,15 @@ Install the following libraries via Library Manager:
 
 ## 🧪 Setup
 
-1. Connect components according to your pin setup:  
-   - Rotary Encoder: pins 5 (DT), 6 (CLK), 4 (SW)  
+1. Connect components according to your pin setup:
+   - OLED: 3 (SCL), 2 (SDA) 
+   - Rotary Encoder: pins 5 (S1), 6 (S2), 4 (KEY)  
    - SSR: pin 10  
    - DHT22: pin 16  
    - RTC (DS1302): pins 9, 8, 7  
-2. Flash the sketch to your Arduino.  
-3. Use the encoder to set your desired ON and OFF times.  
-4. Optional: use double click to correct time via encoder.  
+3. Flash the sketch to your Arduino.  
+4. Use the encoder to set your desired ON and OFF times.  
+5. Optional: use double click to correct time via encoder.  
 
 ## 📄 License
 
@@ -82,5 +83,8 @@ See the [LICENSE](./LICENSE) file for more details.
 
 ---
 
-### 📸 Screenshots (Optional)
+### 📸 Screenshots
+
+![powerSwitchTimer](https://github.com/DannyGudkov/powerSwitchTimer/blob/main/powerSwitchTimer.png)
+
 ---
