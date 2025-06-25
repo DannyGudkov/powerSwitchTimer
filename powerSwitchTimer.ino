@@ -7,7 +7,7 @@
 #include <DS1302.h>
 
 DS1302 rtc(9, 8, 7);
-//Time now;
+Time now = rtc.time();
 
 U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0);
 #define SSR_PIN 10
@@ -95,8 +95,7 @@ void setup() {
 }
 
 void loop() {
-  Time now = rtc.time();
-  //storeNewTime();
+
   readEncoder();
   readButton();
   controlSSR();
@@ -110,15 +109,6 @@ void loop() {
     updateDisplay();
   }
   
-  if (settingMode == NORMAL && lastSettingMode == SET_OFF_MINUTE) {
-    storeTime();
-  } else if (timeSettingMode == TIME_NORMAL && lastTimeSettingMode == SET_MINUTE) {
-    rtc.time(Time(now.yr, now.mon, now.date, newHr, newMin, 0, now.day));
-    readRTC();
-    showSavedMessage = true;
-    savedMessageStart = millis();
-    updateDisplay();
-  }
   if (showSavedMessage && millis() - savedMessageStart >= 4000) {
     showSavedMessage = false;
     updateDisplay();
@@ -132,12 +122,9 @@ void loop() {
   float t = dht.readTemperature();
   float h = dht.readHumidity();
 
-  // Only update if valid reading
-  if (!isnan(t)) temp = t;
+  if (!isnan(t)) temp = t;   // Only update if valid reading
   if (!isnan(h)) humidity = h;
 
-  // Serial.println(temp);
-  // Serial.println(humidity);
   if (page == 1) updateDisplay();  // refresh display if sensor values shown
   }
 }
@@ -149,7 +136,6 @@ void readEncoder() {
     lastInteractionTime = millis();
 
   if (settingMode != NORMAL && timeSettingMode == TIME_NORMAL) {
-  
   if (detent > lastDetent) {
     switch (settingMode) {
       case SET_ON_HOUR:
@@ -255,14 +241,18 @@ void readButton() {
 
 void handleSingleClick() {
   if (page == 0 && timeSettingMode == TIME_NORMAL) {
-    settingMode = static_cast<settingMenu>((settingMode + 1) % 5);
+    settingMode = static_cast<settingMenu>((settingMode + 1) % 6);
+    if (settingMode == EXIT) {
+    storeTime();
+    settingMode = NORMAL;
+    }
     updateDisplay();
   }
 }
 
 void handleDoubleClick() {
   if (page == 0) {
-    timeSettingMode = static_cast<timeSettingMenu>((timeSettingMode + 1) % 3);
+    timeSettingMode = static_cast<timeSettingMenu>((timeSettingMode + 1) % 4);
     if (timeSettingMode == TIME_NORMAL) {
       timeAdjusted = false;
     } else if (!timeAdjusted && (timeSettingMode == SET_HOUR && lastTimeSettingMode == TIME_NORMAL)) {
@@ -270,6 +260,12 @@ void handleDoubleClick() {
     newHr = now.hr;
     newMin = now.min;
     timeAdjusted = true;
+    } else if (timeSettingMode == EXIT2) {
+      rtc.time(Time(now.yr, now.mon, now.date, newHr, newMin, 0, now.day));
+      readRTC();
+      showSavedMessage = true;
+      savedMessageStart = millis();
+      timeSettingMode = TIME_NORMAL;
   }
     updateDisplay();
   }
