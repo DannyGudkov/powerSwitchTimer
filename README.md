@@ -21,7 +21,7 @@ It's been designed for using as light power switch control to switch between tim
 - Arduino (Pro Micro)  
 - Rotary Encoder Module (with push button)  
 - DHT22 sensor  
-- DS1302 Real Time Clock (RTC) module  
+- DS3231 Real Time Clock (RTC) module  
 - SSD1306 128x64 OLED Display (I2C)  
 - Solid State Relay (SSR)  
 - EEPROM (built-in)  
@@ -37,7 +37,7 @@ Install the following libraries via Library Manager:
 #include <U8g2lib.h>
 #include <EEPROM.h>
 #include <DHT.h>
-#include <DS1302.h>
+#include "RTClib.h"
 ```
 
 ## 🖱 Controls
@@ -71,7 +71,7 @@ Install the following libraries via Library Manager:
    - Rotary Encoder: pins 5 (S1), 6 (S2), 4 (KEY)  
    - SSR: pin 10  
    - DHT22: pin 16  
-   - RTC (DS1302): pins 9, 8, 7  
+   - RTC (DS3231): 3 (SCL), 2 (SDA)  
 3. Flash the sketch to your Arduino.  
 4. Use the encoder to set your desired ON and OFF times.  
 5. Optional: use double click to correct time via encoder.  
