@@ -364,7 +364,7 @@ void updateDisplay() {
     u8g2.print(temp, 1);
     u8g2.print(" C");
     u8g2.setFont(u8g2_font_profont10_tf);
-    u8g2.setCursor(96, 20);
+    u8g2.setCursor(80, 20);
     u8g2.print("o");
     u8g2.setFont(u8g2_font_profont22_tf);
     u8g2.setCursor(25, 50);
