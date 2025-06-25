@@ -4,10 +4,9 @@
 #include <U8g2lib.h>
 #include <EEPROM.h>
 #include <DHT.h>
-#include <DS1302.h>
+#include "RTClib.h"
 
-DS1302 rtc(9, 8, 7);
-Time now = rtc.time();
+RTC_DS3231 rtc;
 
 U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0);
 #define SSR_PIN 10
@@ -25,8 +24,8 @@ int lastDetent = 0;
 unsigned long previousMillis = 0, interval = 1000, lastInteractionTime = 0, lastClickTime = 0, currentClickTime = 0;
 const unsigned long interactionTimeout = 10000, clickInterval = 300;
 
-uint8_t currentHour, currentMinute, currentSecond = 0;
-int onHour, onMinute, offHour, offMinute, newHr, newMin;
+uint8_t currentHour, currentMinute, currentSecond = 0, newHr, newMin;
+int onHour, onMinute, offHour, offMinute;
 int page = 0;
 
 float temp = 0.0;
@@ -75,11 +74,17 @@ void setup() {
   button.attach(SW);
   button.interval(50);
   Serial.begin(9600);
+  unsigned long start = millis();
+  while (!Serial && millis() - start < 3000);  // wait up to 3 seconds
+
+  if (!rtc.begin()) {
+    Serial.println("RTC not found!");
+    while (1); // Don't continue if RTC is missing
+  }
+
   pinMode(SSR_PIN, OUTPUT);
   u8g2.begin();
   dht.begin();
-  rtc.writeProtect(false);
-  rtc.halt(false);
 
   if (EEPROM.read(0) == 0x42) {
     onHour = EEPROM.read(1);
@@ -256,12 +261,13 @@ void handleDoubleClick() {
     if (timeSettingMode == TIME_NORMAL) {
       timeAdjusted = false;
     } else if (!timeAdjusted && (timeSettingMode == SET_HOUR && lastTimeSettingMode == TIME_NORMAL)) {
-    Time now = rtc.time();
-    newHr = now.hr;
-    newMin = now.min;
+    DateTime now = rtc.now();
+    newHr = now.hour();
+    newMin = now.minute();
     timeAdjusted = true;
     } else if (timeSettingMode == EXIT2) {
-      rtc.time(Time(now.yr, now.mon, now.date, newHr, newMin, 0, now.day));
+      DateTime now = rtc.now();
+      rtc.adjust(DateTime(now.year(), now.month(), now.day(), newHr, newMin, 0));
       readRTC();
       showSavedMessage = true;
       savedMessageStart = millis();
@@ -281,11 +287,11 @@ void storeNewTime() {
 }
 
 void readRTC() {
-  Time now = rtc.time();
-  if (now.sec != currentSecond) {
-    currentSecond = now.sec;
-    currentMinute = now.min;
-    currentHour = now.hr;
+  DateTime now = rtc.now();
+  if (now.second() != currentSecond) {
+    currentSecond = now.second();
+    currentMinute = now.minute();
+    currentHour = now.hour();
     updateDisplay();
   }
 }
